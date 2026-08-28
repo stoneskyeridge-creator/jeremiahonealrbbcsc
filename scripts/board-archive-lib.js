@@ -30,4 +30,5 @@ function parseBoardLinks(html, base='https://rbbschools.net/school-board/') {
   while((m=re.exec(String(html)))){const label=stripTags(m[2]); if(!/(agenda|minutes?|budget|public hearing|notice|capital projects?|bus replacement)/i.test(label))continue; const url=absoluteUrl(m[1],base); if(!url)continue; const context=stripTags(String(html).slice(Math.max(0,m.index-450),Math.min(String(html).length,re.lastIndex+100))); const date=isoDateFromText(context); out.push({label,sourceUrl:url,sourceType:classifyOfficial(label,url),meetingDate:date});}
   return out;
 }
-module.exports={decodeHtml,stripTags,absoluteUrl,isoDateFromText,parseCatsArchive,parseCaptionLinks,parseVtt,formatTime,classifyOfficial,parseBoardLinks};
+function recordShardKey(record){const y=String(record?.meetingDate||'').slice(0,4);return /^20\d{2}$/.test(y)?y:'undated';}
+module.exports={decodeHtml,stripTags,absoluteUrl,isoDateFromText,parseCatsArchive,parseCaptionLinks,parseVtt,formatTime,classifyOfficial,parseBoardLinks,recordShardKey};
