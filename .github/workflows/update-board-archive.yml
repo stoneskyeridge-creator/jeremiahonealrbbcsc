@@ -19,9 +19,11 @@ jobs:
         with:
           node-version: '20'
       - run: npm install --no-audit --no-fund
-      - run: npm test
+      - name: Test board archive/search code
+        run: node --test tests/board-archive.test.js tests/board-search-aliases.test.js tests/board-search.test.js
       - run: npm run build:board-archive
-      - run: npm test
+      - name: Re-test board archive/search code
+        run: node --test tests/board-archive.test.js tests/board-search-aliases.test.js tests/board-search.test.js
       - name: Commit refreshed archive
         if: github.event_name != 'pull_request'
         run: |
