@@ -9,9 +9,10 @@ function isoDateFromText(text='') {
   const h=text.match(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),\s*(20\d{2})\b/i);
   return h?`${h[3]}-${months[h[1].toLowerCase()]}-${h[2].padStart(2,'0')}`:null;
 }
+function attr(tag,name){const m=String(tag).match(new RegExp(`${name}=["']([^"']*)["']`,'i'));return m?decodeHtml(m[1]):null;}
 function parseCatsArchive(html, base='https://catstv.net/') {
   const out=[]; const rows=String(html).match(/<tr\b[\s\S]*?<\/tr>/gi)||[];
-  for(const row of rows){ const text=stripTags(row); if(!/Richland[- ]Bean Blossom School Board/i.test(text)) continue; const q=row.match(/href=["']([^"']*m\.php\?q=\d+[^"']*)["']/i); if(!q) continue; const url=absoluteUrl(q[1],base); const id=(url.match(/[?&]q=(\d+)/)||[])[1]; if(!id) continue; out.push({id:`cats-${id}`,title:(text.match(/Richland[- ]Bean Blossom School Board[^|]*?(?=(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),|$)/i)||[text])[0].trim(),meetingDate:isoDateFromText(text),sourceUrl:url}); }
+  for(const row of rows){ const text=stripTags(row); if(!/Richland[- ]Bean Blossom School Board/i.test(text)) continue; const anchor=(row.match(/<a\b[^>]*data-permalink=["'][^"']+["'][^>]*>/i)||[])[0]; if(!anchor)continue; const url=absoluteUrl(attr(anchor,'data-permalink'),base); const id=(String(url).match(/[?&]q=(\d+)/)||[])[1]; if(!id)continue; const vtt=attr(anchor,'data-vtt'); const dateText=attr(anchor,'data-date')||text; const title=attr(anchor,'data-name')||(text.match(/Richland[- ]Bean Blossom School Board.*?(?=(?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),|$)/i)||[text])[0].trim(); out.push({id:`cats-${id}`,title,meetingDate:isoDateFromText(dateText),sourceUrl:url,captionUrl:vtt?absoluteUrl(vtt.startsWith('http')?vtt:`https://catstv.blob.core.windows.net/videoarchive/${vtt}`,base):null,videoFile:attr(anchor,'data-m4v')||null}); }
   const seen=new Set(); return out.filter(x=>!seen.has(x.id)&&(seen.add(x.id),true));
 }
 function parseCaptionLinks(html, base) {
