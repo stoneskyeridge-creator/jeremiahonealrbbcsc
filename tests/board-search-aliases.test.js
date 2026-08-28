@@ -1,3 +1,5 @@
 const test=require('node:test');const assert=require('node:assert/strict');const BoardSearch=require('../assets/board-search');
 
 test('special education matches SPED and special ed wording',()=>{const records=[{id:'1',meetingDate:'2026-01-01',sourceType:'agenda',official:true,text:'SPED staffing update'},{id:'2',meetingDate:'2026-01-02',sourceType:'minutes',official:true,text:'Special ed services discussion'},{id:'3',meetingDate:'2026-01-03',sourceType:'agenda',official:true,text:'Transportation update'}];const found=BoardSearch.search(records,'special education');assert.deepEqual(found.map(x=>x.id).sort(),['1','2']);});
+
+test('excerpt centers long records near an alias match',()=>{const text='A'.repeat(1500)+' SPED staffing and classroom supports were discussed. '+'B'.repeat(1500);const excerpt=BoardSearch.excerpt(text,'special education',500);assert.ok(excerpt.length<=502);assert.match(excerpt,/SPED staffing/);assert.match(BoardSearch.highlight(excerpt,'special education'),/<mark>SPED<\/mark>/i);});
