@@ -26,6 +26,8 @@ jobs:
       - run: npm run build:board-archive
       - name: Re-test board archive/search code
         run: node --test tests/board-archive.test.js tests/board-search-aliases.test.js tests/board-search.test.js
+      - name: Validate built archive search
+        run: node scripts/validate-board-archive.js
       - name: Commit refreshed archive
         run: |
           if git diff --quiet -- data/search-index.json data/search-shards data/meetings.json; then
