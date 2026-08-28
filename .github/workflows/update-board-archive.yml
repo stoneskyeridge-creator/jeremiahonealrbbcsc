@@ -1,0 +1,34 @@
+name: Update RBBCSC board archive
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 9 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-audit --no-fund
+      - run: npm test
+      - run: npm run build:board-archive
+      - run: npm test
+      - name: Commit refreshed archive
+        run: |
+          if git diff --quiet -- data/search-records.json data/meetings.json; then
+            echo "No archive changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/search-records.json data/meetings.json
+          git commit -m "data: refresh RBBCSC board archive"
+          git push
