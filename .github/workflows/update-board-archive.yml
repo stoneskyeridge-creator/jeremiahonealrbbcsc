@@ -2,6 +2,7 @@ name: Update RBBCSC board archive
 
 on:
   workflow_dispatch:
+  pull_request:
   schedule:
     - cron: '17 9 * * *'
 
@@ -22,6 +23,7 @@ jobs:
       - run: npm run build:board-archive
       - run: npm test
       - name: Commit refreshed archive
+        if: github.event_name != 'pull_request'
         run: |
           if git diff --quiet -- data/search-records.json data/meetings.json; then
             echo "No archive changes"
