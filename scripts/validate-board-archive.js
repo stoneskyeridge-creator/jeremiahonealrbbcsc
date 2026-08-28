@@ -1,0 +1,4 @@
+const fs=require('node:fs');const path=require('node:path');const BoardSearch=require('../assets/board-search');
+const root=path.join(__dirname,'..');const manifest=JSON.parse(fs.readFileSync(path.join(root,'data/search-index.json'),'utf8'));let records=[];for(const shard of manifest.shards||[]){records.push(...JSON.parse(fs.readFileSync(path.join(root,shard.file),'utf8')))}
+const official=BoardSearch.search(records,'special education',{includeTranscripts:false,sourceType:'all'});const all=BoardSearch.search(records,'special education',{includeTranscripts:true,sourceType:'all'});const transcripts=all.filter(r=>r.sourceType==='video-transcript');
+console.log(`Validation query "special education": ${all.length} total, ${official.length} official, ${transcripts.length} transcript matches`);if(!official.length)throw new Error('Expected at least one official special education match');if(!all.length)throw new Error('Expected archive search matches');

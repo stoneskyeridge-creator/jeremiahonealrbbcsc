@@ -1,1 +1,1 @@
-{"name":"jeremiahonealrbbcsc","private":true,"scripts":{"test":"node --test tests/*.test.js"},"dependencies":{"@netlify/blobs":"^10.0.0"}}
+{"name":"jeremiahonealrbbcsc","private":true,"scripts":{"test":"node --test tests/*.test.js","build:board-archive":"node scripts/build-board-archive.js"},"dependencies":{"@netlify/blobs":"^10.0.0","pdf-parse":"^1.1.1"}}
