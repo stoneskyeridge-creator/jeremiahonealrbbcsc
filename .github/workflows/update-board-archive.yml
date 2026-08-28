@@ -28,12 +28,12 @@ jobs:
         run: node --test tests/board-archive.test.js tests/board-search-aliases.test.js tests/board-search.test.js
       - name: Commit refreshed archive
         run: |
-          if git diff --quiet -- data/search-records.json data/meetings.json; then
+          if git diff --quiet -- data/search-index.json data/search-shards data/meetings.json; then
             echo "No archive changes"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/search-records.json data/meetings.json
+          git add -A data/search-index.json data/search-shards data/meetings.json
           git commit -m "data: refresh RBBCSC board archive"
           git push
