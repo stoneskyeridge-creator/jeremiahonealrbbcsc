@@ -15,6 +15,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -25,7 +27,6 @@ jobs:
       - name: Re-test board archive/search code
         run: node --test tests/board-archive.test.js tests/board-search-aliases.test.js tests/board-search.test.js
       - name: Commit refreshed archive
-        if: github.event_name != 'pull_request'
         run: |
           if git diff --quiet -- data/search-records.json data/meetings.json; then
             echo "No archive changes"
