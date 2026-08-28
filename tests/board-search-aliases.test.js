@@ -1,0 +1,3 @@
+const test=require('node:test');const assert=require('node:assert/strict');const BoardSearch=require('../assets/board-search');
+
+test('special education matches SPED and special ed wording',()=>{const records=[{id:'1',meetingDate:'2026-01-01',sourceType:'agenda',official:true,text:'SPED staffing update'},{id:'2',meetingDate:'2026-01-02',sourceType:'minutes',official:true,text:'Special ed services discussion'},{id:'3',meetingDate:'2026-01-03',sourceType:'agenda',official:true,text:'Transportation update'}];const found=BoardSearch.search(records,'special education');assert.deepEqual(found.map(x=>x.id).sort(),['1','2']);});
