@@ -1,0 +1,1 @@
+'use strict';const {COOKIE}=require('./_analytics-auth');exports.handler=async()=>({statusCode:200,headers:{'content-type':'application/json','cache-control':'no-store','set-cookie':`${COOKIE}=; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=0`},body:'{"ok":true}'});
