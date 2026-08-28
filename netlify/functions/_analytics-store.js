@@ -1,8 +1,8 @@
 'use strict';
 const {getStore}=require('@netlify/blobs');
-const STORE='private-campaign-analytics';
+const STORE='private-campaign-analytics',RAW_IP_DAYS=30,ANON_RETENTION_UNTIL=Date.parse('2027-02-02T00:00:00Z');
 function store(){return getStore(STORE)}
 async function appendEvent(event){const now=new Date();const id=`events/${now.toISOString().slice(0,10)}/${now.getTime()}-${Math.random().toString(36).slice(2)}.json`;await store().setJSON(id,event);await store().setJSON('status/last-event.json',{at:now.toISOString()});return id}
-async function listEvents(){const s=store(),out=[];let cursor;do{const page=await s.list({prefix:'events/',cursor});for(const b of page.blobs||[]){const e=await s.get(b.key,{type:'json'});if(e)out.push({key:b.key,...e})}cursor=page.cursor}while(cursor);return out}
-async function health(){try{const x=await store().get('status/last-event.json',{type:'json'});return{storage:true,lastEvent:x?.at||null}}catch{return{storage:false,lastEvent:null}}}
-module.exports={appendEvent,listEvents,health,STORE};
+async function listEvents(){const s=store(),out=[];let cursor;const now=Date.now();do{const page=await s.list({prefix:'events/',cursor});for(const b of page.blobs||[]){let e=await s.get(b.key,{type:'json'});if(!e)continue;const received=Date.parse(e.receivedAt||0);if(received&&received>ANON_RETENTION_UNTIL){continue}if(e.rawIp&&(Date.parse(e.rawIpExpiresAt||0)<=now||received+RAW_IP_DAYS*864e5<=now)){e={...e,rawIp:null,rawIpExpired:true};await s.setJSON(b.key,e)}out.push({key:b.key,...e})}cursor=page.cursor}while(cursor);return out}
+async function health(){try{const x=await store().get('status/last-event.json',{type:'json'});return{storage:true,lastEvent:x?.at||null,rawIpRetentionDays:RAW_IP_DAYS,anonymousRetentionUntil:new Date(ANON_RETENTION_UNTIL).toISOString()}}catch{return{storage:false,lastEvent:null,rawIpRetentionDays:RAW_IP_DAYS,anonymousRetentionUntil:new Date(ANON_RETENTION_UNTIL).toISOString()}}}
+module.exports={appendEvent,listEvents,health,STORE,RAW_IP_DAYS,ANON_RETENTION_UNTIL};
