@@ -1,4 +1,5 @@
 const fs=require('node:fs');const path=require('node:path');const pdf=require('pdf-parse');const lib=require('./board-archive-lib');
+// Keep generated static search files small enough for reliable CDN/browser loading.
 const ROOT=path.join(__dirname,'..'),DATA=path.join(ROOT,'data'),SHARDS=path.join(DATA,'search-shards'),CATS='https://catstv.net/government.php?daterange=all&issearch=govt&meeterid=&responsive=2&searchonly=NS&webquery=Richland',BOARD='https://rbbschools.net/school-board/',MAX_SHARD_BYTES=4*1024*1024;
 async function get(url,type='text'){const r=await fetch(url,{headers:{'user-agent':'RBBCSC-public-record-indexer/1.0'}});if(!r.ok)throw Error(`${r.status} ${url}`);return type==='buffer'?Buffer.from(await r.arrayBuffer()):r.text();}
 function safeId(s){return String(s).toLowerCase().replace(/https?:\/\//g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,110)}
