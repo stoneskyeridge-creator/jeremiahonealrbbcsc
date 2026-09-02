@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-02T09:31:38.349Z",
+  "generatedAt": "2026-09-02T14:14:53.316Z",
   "totalRecords": 16267,
   "shards": [
     {
@@ -10,45 +10,189 @@
     },
     {
       "year": "2026",
-      "file": "data/search-shards/2026.json",
-      "records": 7027,
-      "bytes": 9895929
+      "file": "data/search-shards/2026-01.json",
+      "records": 3900,
+      "bytes": 4115009
+    },
+    {
+      "year": "2026",
+      "file": "data/search-shards/2026-02.json",
+      "records": 2709,
+      "bytes": 4194106
+    },
+    {
+      "year": "2026",
+      "file": "data/search-shards/2026-03.json",
+      "records": 418,
+      "bytes": 1586816
     },
     {
       "year": "2025",
-      "file": "data/search-shards/2025.json",
-      "records": 9028,
-      "bytes": 11383477
+      "file": "data/search-shards/2025-01.json",
+      "records": 3703,
+      "bytes": 4194091
+    },
+    {
+      "year": "2025",
+      "file": "data/search-shards/2025-02.json",
+      "records": 3093,
+      "bytes": 4194218
+    },
+    {
+      "year": "2025",
+      "file": "data/search-shards/2025-03.json",
+      "records": 2232,
+      "bytes": 2995170
     },
     {
       "year": "2024",
-      "file": "data/search-shards/2024.json",
-      "records": 44,
-      "bytes": 5905589
+      "file": "data/search-shards/2024-01.json",
+      "records": 30,
+      "bytes": 4152541
+    },
+    {
+      "year": "2024",
+      "file": "data/search-shards/2024-02.json",
+      "records": 14,
+      "bytes": 1753049
     },
     {
       "year": "2023",
-      "file": "data/search-shards/2023.json",
-      "records": 51,
-      "bytes": 10169318
+      "file": "data/search-shards/2023-01.json",
+      "records": 20,
+      "bytes": 3065709
+    },
+    {
+      "year": "2023",
+      "file": "data/search-shards/2023-02.json",
+      "records": 16,
+      "bytes": 4176375
+    },
+    {
+      "year": "2023",
+      "file": "data/search-shards/2023-03.json",
+      "records": 15,
+      "bytes": 2927236
     },
     {
       "year": "2022",
-      "file": "data/search-shards/2022.json",
-      "records": 44,
-      "bytes": 22860588
+      "file": "data/search-shards/2022-01.json",
+      "records": 21,
+      "bytes": 4127166
+    },
+    {
+      "year": "2022",
+      "file": "data/search-shards/2022-02.json",
+      "records": 4,
+      "bytes": 954495
+    },
+    {
+      "year": "2022",
+      "file": "data/search-shards/2022-03.json",
+      "records": 1,
+      "bytes": 4008174
+    },
+    {
+      "year": "2022",
+      "file": "data/search-shards/2022-04.json",
+      "records": 11,
+      "bytes": 3894602
+    },
+    {
+      "year": "2022",
+      "file": "data/search-shards/2022-05.json",
+      "records": 2,
+      "bytes": 3555888
+    },
+    {
+      "year": "2022",
+      "file": "data/search-shards/2022-06.json",
+      "records": 2,
+      "bytes": 2990625
+    },
+    {
+      "year": "2022",
+      "file": "data/search-shards/2022-07.json",
+      "records": 3,
+      "bytes": 3329644
     },
     {
       "year": "2021",
-      "file": "data/search-shards/2021.json",
-      "records": 34,
-      "bytes": 24008184
+      "file": "data/search-shards/2021-01.json",
+      "records": 4,
+      "bytes": 4050917
+    },
+    {
+      "year": "2021",
+      "file": "data/search-shards/2021-02.json",
+      "records": 5,
+      "bytes": 3070045
+    },
+    {
+      "year": "2021",
+      "file": "data/search-shards/2021-03.json",
+      "records": 1,
+      "bytes": 3024995
+    },
+    {
+      "year": "2021",
+      "file": "data/search-shards/2021-04.json",
+      "records": 2,
+      "bytes": 2186804
+    },
+    {
+      "year": "2021",
+      "file": "data/search-shards/2021-05.json",
+      "records": 2,
+      "bytes": 3047484
+    },
+    {
+      "year": "2021",
+      "file": "data/search-shards/2021-06.json",
+      "records": 6,
+      "bytes": 3023379
+    },
+    {
+      "year": "2021",
+      "file": "data/search-shards/2021-07.json",
+      "records": 8,
+      "bytes": 4108650
+    },
+    {
+      "year": "2021",
+      "file": "data/search-shards/2021-08.json",
+      "records": 6,
+      "bytes": 1495917
     },
     {
       "year": "2020",
-      "file": "data/search-shards/2020.json",
-      "records": 34,
-      "bytes": 21833650
+      "file": "data/search-shards/2020-01.json",
+      "records": 5,
+      "bytes": 2324409
+    },
+    {
+      "year": "2020",
+      "file": "data/search-shards/2020-02.json",
+      "records": 1,
+      "bytes": 10654329
+    },
+    {
+      "year": "2020",
+      "file": "data/search-shards/2020-03.json",
+      "records": 6,
+      "bytes": 2888862
+    },
+    {
+      "year": "2020",
+      "file": "data/search-shards/2020-04.json",
+      "records": 14,
+      "bytes": 3948192
+    },
+    {
+      "year": "2020",
+      "file": "data/search-shards/2020-05.json",
+      "records": 8,
+      "bytes": 2017862
     }
   ]
 }
