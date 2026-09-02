@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-02T14:14:53.316Z",
+  "generatedAt": "2026-09-02T14:24:58.424Z",
   "totalRecords": 16267,
   "shards": [
     {
@@ -167,32 +167,38 @@
     {
       "year": "2020",
       "file": "data/search-shards/2020-01.json",
-      "records": 5,
-      "bytes": 2324409
+      "records": 6,
+      "bytes": 3697436
     },
     {
       "year": "2020",
       "file": "data/search-shards/2020-02.json",
-      "records": 1,
-      "bytes": 10654329
+      "records": 2,
+      "bytes": 3097224
     },
     {
       "year": "2020",
       "file": "data/search-shards/2020-03.json",
-      "records": 6,
-      "bytes": 2888862
+      "records": 3,
+      "bytes": 4069936
     },
     {
       "year": "2020",
       "file": "data/search-shards/2020-04.json",
-      "records": 14,
-      "bytes": 3948192
+      "records": 7,
+      "bytes": 3448051
     },
     {
       "year": "2020",
       "file": "data/search-shards/2020-05.json",
-      "records": 8,
-      "bytes": 2017862
+      "records": 5,
+      "bytes": 4069483
+    },
+    {
+      "year": "2020",
+      "file": "data/search-shards/2020-06.json",
+      "records": 18,
+      "bytes": 3454024
     }
   ]
 }
