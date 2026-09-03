@@ -7,6 +7,7 @@ on:
     paths:
       - 'scripts/build-board-archive.js'
       - 'scripts/add-home-archive-search.js'
+      - '.github/workflows/update-board-archive.yml'
   schedule:
     - cron: '17 9 * * *'
 
@@ -44,4 +45,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A data/search-index.json data/search-shards data/meetings.json data/transcript-index index.html
           git commit -m "data: refresh RBBCSC board archive and homepage search"
-          git push
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
