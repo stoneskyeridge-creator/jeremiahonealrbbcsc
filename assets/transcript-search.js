@@ -1,12 +1,53 @@
-(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;root.TranscriptSearch=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){
-const stop=new Set('the and for that with this from have are was were will would could should into about your our their they them then than been being not but you all can may has had its his her she he we of to in on at by as is it or be do did does if so no yes what when where who how why which out up down over under more most some any each other there here also just very much many such only through because while during before after between within without across per via upon these those'.split(' '));
-const tokens=q=>String(q||'').toLowerCase().replace(/[’‘]/g,"'").match(/[a-z0-9']{3,}/g)?.filter(t=>!stop.has(t)&&!/^[0-9]+$/.test(t))||[];
-const decodePostings=s=>String(s||'').split('.').filter(Boolean).map(x=>parseInt(x,36)).filter(Number.isFinite);
-function searchIndex(index,q){const ts=[...new Set(tokens(q))];if(!ts.length)return[];const lists=[];for(const t of ts){const p=decodePostings(index&&index.x&&index.x[t]);if(!p.length)return[];lists.push(p)}lists.sort((a,b)=>a.length-b.length);let ids=new Set(lists[0]);for(const list of lists.slice(1)){const s=new Set(list);ids=new Set([...ids].filter(i=>s.has(i)));if(!ids.size)break}return [...ids].map(i=>index.r[i]).filter(Boolean).sort((a,b)=>String(b[1]||'').localeCompare(String(a[1]||'')))}
-function b64bytes(s){const bin=atob(String(s||'').replace(/\s+/g,''));const out=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)out[i]=bin.charCodeAt(i);return out}
-function ascii(bytes){let s='';for(let i=0;i<bytes.length;i++)s+=String.fromCharCode(bytes[i]);return s}
-function isGzip(bytes){return bytes&&bytes.length>2&&bytes[0]===31&&bytes[1]===139}
-function decodeChunks(texts){const joined=texts.join('').replace(/\s+/g,'');try{const direct=b64bytes(joined);if(isGzip(direct))return direct}catch{}try{const inner=texts.map(t=>ascii(b64bytes(t))).join('').replace(/\s+/g,'');const twice=b64bytes(inner);if(isGzip(twice))return twice}catch{}throw new Error('Transcript archive encoding is invalid')}
-async function loadArchive(base='data/transcript-index'){if(typeof DecompressionStream==='undefined')throw new Error('This browser does not support compressed transcript search.');const texts=await Promise.all([0,1,2,3].map(async i=>{const r=await fetch(`${base}/archive4-${String(i).padStart(2,'0')}.b64`,{cache:'no-cache'});if(!r.ok)throw new Error(`Transcript archive chunk ${i} failed to load`);return r.text()}));const bytes=decodeChunks(texts);const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));const text=await new Response(stream).text();const index=JSON.parse(text);if(!index||!Array.isArray(index.r)||!index.x)throw new Error('Transcript archive index is invalid');return index}
-return{tokens,decodePostings,searchIndex,loadArchive};
+(function(root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.TranscriptSearch = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function() {
+  const stop = new Set('the and for that with this from have are was were will would could should into about your our their they them then than been being not but you all can may has had its his her she he we of to in on at by as is it or be do did does if so no yes what when where who how why which out up down over under more most some any each other there here also just very much many such only through because while during before after between within without across per via upon these those'.split(' '));
+
+  const tokens = q => String(q || '')
+    .toLowerCase()
+    .replace(/[’‘]/g, "'")
+    .match(/[a-z0-9']{3,}/g)
+    ?.filter(t => !stop.has(t) && !/^[0-9]+$/.test(t)) || [];
+
+  const decodePostings = s => String(s || '')
+    .split('.')
+    .filter(Boolean)
+    .map(x => parseInt(x, 36))
+    .filter(Number.isFinite);
+
+  function searchIndex(index, q) {
+    const ts = [...new Set(tokens(q))];
+    if (!ts.length) return [];
+    const lists = [];
+    for (const t of ts) {
+      const p = decodePostings(index && index.x && index.x[t]);
+      if (!p.length) return [];
+      lists.push(p);
+    }
+    lists.sort((a, b) => a.length - b.length);
+    let ids = new Set(lists[0]);
+    for (const list of lists.slice(1)) {
+      const s = new Set(list);
+      ids = new Set([...ids].filter(i => s.has(i)));
+      if (!ids.size) break;
+    }
+    return [...ids]
+      .map(i => index.r[i])
+      .filter(Boolean)
+      .sort((a, b) => String(b[1] || '').localeCompare(String(a[1] || '')));
+  }
+
+  async function loadArchive(base = 'data/transcript-index') {
+    const plain = await fetch(`${base}/index.json`, { cache: 'no-cache' });
+    if (!plain.ok) throw new Error('Transcript index failed to load');
+    const index = await plain.json();
+    if (!index || !Array.isArray(index.r) || !index.x) {
+      throw new Error('Transcript archive index is invalid');
+    }
+    return index;
+  }
+
+  return { tokens, decodePostings, searchIndex, loadArchive };
 });
