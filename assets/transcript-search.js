@@ -21,33 +21,35 @@
     const wanted=[...new Set(tokens(q))]; if(!wanted.length||!Array.isArray(segments))return[];
     const hits=[];
     for(let i=0;i<segments.length;i++){
-      const start=Number(segments[i]?.[0])||0;
-      const window=segments.slice(i,Math.min(segments.length,i+3));
-      const text=window.map(s=>String(s?.[1]||'')).join(' ').trim();
-      const hay=text.toLowerCase().replace(/[’‘]/g,"'");
-      if(wanted.every(t=>hay.includes(t))){
-        const before=i?String(segments[i-1]?.[1]||'')+' ':'';
-        const after=i+3<segments.length?' '+String(segments[i+3]?.[1]||''):'';
-        hits.push({start,excerpt:(before+text+after).trim()});
-        i+=Math.max(0,window.length-1);
-      }
+      const start=Number(segments[i]?.[0])||0,window=segments.slice(i,Math.min(segments.length,i+3));
+      const text=window.map(s=>String(s?.[1]||'')).join(' ').trim(),hay=text.toLowerCase().replace(/[’‘]/g,"'");
+      if(wanted.every(t=>hay.includes(t))){const before=i?String(segments[i-1]?.[1]||'')+' ':'';const after=i+3<segments.length?' '+String(segments[i+3]?.[1]||''):'';hits.push({start,excerpt:(before+text+after).trim()});i+=Math.max(0,window.length-1)}
     }
     return hits;
   }
   async function loadArchive(base='data/transcript-index') {
     const plain=await fetch(`${base}/RBBCSC_transcript_index.json`,{cache:'no-cache'});
     if(!plain.ok) throw new Error('Transcript index failed to load');
-    const index=await plain.json();
-    if(!index||!Array.isArray(index.r)||!index.x) throw new Error('Transcript archive index is invalid');
-    return index;
+    const index=await plain.json(); if(!index||!Array.isArray(index.r)||!index.x) throw new Error('Transcript archive index is invalid'); return index;
   }
   async function loadTranscriptData(url='data/transcript-detail/RBBCSC_transcripts.json.gz'){
     const r=await fetch(url,{cache:'no-cache'}); if(!r.ok)throw new Error('Transcript detail data failed to load');
     if(typeof DecompressionStream!=='function')throw new Error('This browser cannot open compressed transcript detail data');
-    const stream=r.body.pipeThrough(new DecompressionStream('gzip'));
-    const text=await new Response(stream).text(); const data=JSON.parse(text);
+    const stream=r.body.pipeThrough(new DecompressionStream('gzip')); const text=await new Response(stream).text(); const data=JSON.parse(text);
     if(!Array.isArray(data))throw new Error('Transcript detail data is invalid'); return data;
   }
   const findMeeting=(data,catsId)=>Array.isArray(data)?data.find(r=>String(r?.[0])===String(catsId)):null;
+  let detailPromise=null,lastQuery='';
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function highlighted(text,q){let out=esc(text);for(const t of [...new Set(tokens(q))])out=out.replace(new RegExp(`(${t.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&')})`,'ig'),'<mark>$1</mark>');return out}
+  async function enrichCards(){
+    if(typeof document==='undefined')return;const query=document.getElementById('q')?.value?.trim()||'';if(!query)return;
+    const cards=[...document.querySelectorAll('#results .card')].filter(c=>c.querySelector('a[href*="catstv.net/m.php?q="]')&&!c.dataset.transcriptEnriched);if(!cards.length)return;
+    try{detailPromise=detailPromise||loadTranscriptData();const data=await detailPromise;if(query!==(document.getElementById('q')?.value?.trim()||''))return;
+      for(const card of cards){const a=card.querySelector('a[href*="catstv.net/m.php?q="]'),id=new URL(a.href).searchParams.get('q'),row=findMeeting(data,id);if(!row)continue;const hits=findMatches(row[3],query);if(!hits.length)continue;const hit=hits[0],p=card.querySelector('.excerpt');if(p)p.innerHTML=highlighted(hit.excerpt,query);const info=document.createElement('p');info.style.fontWeight='900';info.textContent=`First transcript match: ${formatTimestamp(hit.start)}`;p?.after(info);const view=document.createElement('a');view.href=`transcript.html?id=${encodeURIComponent(id)}&q=${encodeURIComponent(query)}`;view.textContent='View Full Transcript ↗';view.style.marginRight='18px';a.before(view);card.dataset.transcriptEnriched='1'}
+    }catch(e){}
+  }
+  function installEnricher(){if(typeof document==='undefined')return;const start=()=>{const r=document.getElementById('results');if(!r)return;new MutationObserver(()=>setTimeout(enrichCards,0)).observe(r,{childList:true});document.getElementById('go')?.addEventListener('click',()=>setTimeout(enrichCards,100));setTimeout(enrichCards,100)};document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start):start()}
+  installEnricher();
   return {tokens,decodePostings,searchIndex,formatTimestamp,findMatches,loadArchive,loadTranscriptData,findMeeting};
 });
