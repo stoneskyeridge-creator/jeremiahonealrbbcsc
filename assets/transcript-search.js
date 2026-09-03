@@ -39,14 +39,13 @@
     if(!Array.isArray(data))throw new Error('Transcript detail data is invalid'); return data;
   }
   const findMeeting=(data,catsId)=>Array.isArray(data)?data.find(r=>String(r?.[0])===String(catsId)):null;
-  let detailPromise=null,lastQuery='';
+  let detailPromise=null;
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  function highlighted(text,q){let out=esc(text);for(const t of [...new Set(tokens(q))])out=out.replace(new RegExp(`(${t.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&')})`,'ig'),'<mark>$1</mark>');return out}
   async function enrichCards(){
     if(typeof document==='undefined')return;const query=document.getElementById('q')?.value?.trim()||'';if(!query)return;
     const cards=[...document.querySelectorAll('#results .card')].filter(c=>c.querySelector('a[href*="catstv.net/m.php?q="]')&&!c.dataset.transcriptEnriched);if(!cards.length)return;
     try{detailPromise=detailPromise||loadTranscriptData();const data=await detailPromise;if(query!==(document.getElementById('q')?.value?.trim()||''))return;
-      for(const card of cards){const a=card.querySelector('a[href*="catstv.net/m.php?q="]'),id=new URL(a.href).searchParams.get('q'),row=findMeeting(data,id);if(!row)continue;const hits=findMatches(row[3],query);if(!hits.length)continue;const hit=hits[0],p=card.querySelector('.excerpt');if(p)p.innerHTML=highlighted(hit.excerpt,query);const info=document.createElement('p');info.style.fontWeight='900';info.textContent=`First transcript match: ${formatTimestamp(hit.start)}`;p?.after(info);const view=document.createElement('a');view.href=`transcript.html?id=${encodeURIComponent(id)}&q=${encodeURIComponent(query)}`;view.textContent='View Full Transcript ↗';view.style.marginRight='18px';a.before(view);card.dataset.transcriptEnriched='1'}
+      for(const card of cards){const a=card.querySelector('a[href*="catstv.net/m.php?q="]'),id=new URL(a.href).searchParams.get('q'),row=findMeeting(data,id);if(!row)continue;const hits=findMatches(row[3],query);if(!hits.length)continue;const hit=hits[0],p=card.querySelector('.excerpt');if(p)p.innerHTML=esc(hit.excerpt);const info=document.createElement('p');info.style.fontWeight='900';info.textContent=`First transcript match: ${formatTimestamp(hit.start)}`;p?.after(info);const view=document.createElement('a');view.href=`transcript.html?id=${encodeURIComponent(id)}&q=${encodeURIComponent(query)}`;view.textContent='View Full Transcript ↗';view.style.marginRight='18px';a.before(view);card.dataset.transcriptEnriched='1'}
     }catch(e){}
   }
   function installEnricher(){if(typeof document==='undefined')return;const start=()=>{const r=document.getElementById('results');if(!r)return;new MutationObserver(()=>setTimeout(enrichCards,0)).observe(r,{childList:true});document.getElementById('go')?.addEventListener('click',()=>setTimeout(enrichCards,100));setTimeout(enrichCards,100)};document.readyState==='loading'?document.addEventListener('DOMContentLoaded',start):start()}
