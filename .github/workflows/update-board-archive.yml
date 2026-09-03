@@ -6,6 +6,7 @@ on:
   push:
     paths:
       - 'scripts/build-board-archive.js'
+      - 'scripts/add-home-archive-search.js'
   schedule:
     - cron: '17 9 * * *'
 
@@ -25,20 +26,22 @@ jobs:
           node-version: '20'
       - run: npm install --no-audit --no-fund
       - name: Test board archive/search code
-        run: node --test tests/board-archive.test.js tests/board-search-aliases.test.js tests/board-search.test.js
+        run: node --test tests/board-archive.test.js tests/board-search-aliases.test.js tests/board-search.test.js tests/transcript-fuzzy.test.js tests/transcript-viewer.test.js
       - run: npm run build:board-archive
+      - name: Add homepage archive search
+        run: node scripts/add-home-archive-search.js
       - name: Re-test board archive/search code
-        run: node --test tests/board-archive.test.js tests/board-search-aliases.test.js tests/board-search.test.js
+        run: node --test tests/board-archive.test.js tests/board-search-aliases.test.js tests/board-search.test.js tests/transcript-fuzzy.test.js tests/transcript-viewer.test.js
       - name: Validate built archive search
         run: node scripts/validate-board-archive.js
-      - name: Commit refreshed archive
+      - name: Commit refreshed archive and homepage search
         run: |
-          if git diff --quiet -- data/search-index.json data/search-shards data/meetings.json data/transcript-index; then
-            echo "No archive changes"
+          if git diff --quiet -- data/search-index.json data/search-shards data/meetings.json data/transcript-index index.html; then
+            echo "No archive or homepage changes"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A data/search-index.json data/search-shards data/meetings.json data/transcript-index
-          git commit -m "data: refresh RBBCSC board archive"
+          git add -A data/search-index.json data/search-shards data/meetings.json data/transcript-index index.html
+          git commit -m "data: refresh RBBCSC board archive and homepage search"
           git push
