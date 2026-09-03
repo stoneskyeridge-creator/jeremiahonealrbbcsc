@@ -6,3 +6,4 @@ const block='<section class="archiveSearchTop" aria-label="RBBCSC meeting archiv
 if(!html.includes('.archiveSearchTop{')) html=html.replace('</style>',css+'</style>');
 if(!html.includes('aria-label="RBBCSC meeting archive search"')) html=html.replace('<main id="top">','<main id="top">'+block);
 fs.writeFileSync(path,html);
+// Idempotent: safe to run on every archive refresh.
