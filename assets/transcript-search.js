@@ -13,6 +13,27 @@
     for(const list of lists.slice(1)){const s=new Set(list);ids=new Set([...ids].filter(i=>s.has(i)));if(!ids.size)break}
     return [...ids].map(i=>index.r[i]).filter(Boolean).sort((a,b)=>String(b[1]||'').localeCompare(String(a[1]||'')));
   }
+  function formatTimestamp(seconds){
+    const n=Math.max(0,Math.floor(Number(seconds)||0)),h=Math.floor(n/3600),m=Math.floor((n%3600)/60),s=n%60;
+    return h?`${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`:`${m}:${String(s).padStart(2,'0')}`;
+  }
+  function findMatches(segments,q){
+    const wanted=[...new Set(tokens(q))]; if(!wanted.length||!Array.isArray(segments))return[];
+    const hits=[];
+    for(let i=0;i<segments.length;i++){
+      const start=Number(segments[i]?.[0])||0;
+      const window=segments.slice(i,Math.min(segments.length,i+3));
+      const text=window.map(s=>String(s?.[1]||'')).join(' ').trim();
+      const hay=text.toLowerCase().replace(/[’‘]/g,"'");
+      if(wanted.every(t=>hay.includes(t))){
+        const before=i?String(segments[i-1]?.[1]||'')+' ':'';
+        const after=i+3<segments.length?' '+String(segments[i+3]?.[1]||''):'';
+        hits.push({start,excerpt:(before+text+after).trim()});
+        i+=Math.max(0,window.length-1);
+      }
+    }
+    return hits;
+  }
   async function loadArchive(base='data/transcript-index') {
     const plain=await fetch(`${base}/RBBCSC_transcript_index.json`,{cache:'no-cache'});
     if(!plain.ok) throw new Error('Transcript index failed to load');
@@ -20,5 +41,13 @@
     if(!index||!Array.isArray(index.r)||!index.x) throw new Error('Transcript archive index is invalid');
     return index;
   }
-  return {tokens,decodePostings,searchIndex,loadArchive};
+  async function loadTranscriptData(url='data/transcript-detail/RBBCSC_transcripts.json.gz'){
+    const r=await fetch(url,{cache:'no-cache'}); if(!r.ok)throw new Error('Transcript detail data failed to load');
+    if(typeof DecompressionStream!=='function')throw new Error('This browser cannot open compressed transcript detail data');
+    const stream=r.body.pipeThrough(new DecompressionStream('gzip'));
+    const text=await new Response(stream).text(); const data=JSON.parse(text);
+    if(!Array.isArray(data))throw new Error('Transcript detail data is invalid'); return data;
+  }
+  const findMeeting=(data,catsId)=>Array.isArray(data)?data.find(r=>String(r?.[0])===String(catsId)):null;
+  return {tokens,decodePostings,searchIndex,formatTimestamp,findMatches,loadArchive,loadTranscriptData,findMeeting};
 });
