@@ -1,5 +1,16 @@
 [
   {
+    "id": "official-2026-09-15",
+    "meetingDate": "2026-09-15",
+    "meetingTitle": "RBBCSC School Board",
+    "sourceUrl": "https://rbbschools.net/fs/resource-manager/view/27da7c66-d8bc-4bc0-87ed-8ba4cd8e4d84",
+    "video": false,
+    "captionStatus": "unknown",
+    "transcriptSegments": 0,
+    "ingestion": "auto",
+    "writtenDocuments": true
+  },
+  {
     "id": "cats-16312",
     "meetingDate": "2026-08-18",
     "meetingTitle": "Richland Bean Blossom School Board 8/18",
