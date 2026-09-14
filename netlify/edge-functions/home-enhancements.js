@@ -10,7 +10,10 @@ export default async (request, context) => {
     const news = `<section id="innovation-news" style="background:#fff;padding:38px 0 10px"><div class="wrap"><a href="innovation-watch.html" style="display:block;text-decoration:none;color:inherit"><div style="border:2px solid #d6a72a;border-radius:17px;padding:22px;background:#fbf6e9;box-shadow:0 8px 22px rgba(28,26,23,.08)"><div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap"><div aria-hidden="true" style="font-size:64px;line-height:1">📰</div><div style="flex:1;min-width:240px"><div class="ey">INNOVATION & NEWS • NEWEST ARTICLE</div><h2 style="margin:5px 0 8px;font-size:clamp(1.55rem,3vw,2.25rem)">Yale research: Can socially assistive robots help children with autism engage and communicate?</h2><p style="margin:0;color:#625d53">Research, emerging technology and school ideas worth watching. See the newest story, then browse the full article list.</p><span class="btn gold" style="margin-top:14px">VIEW INNOVATION & NEWS →</span></div></div></div></a></div></section>`;
     if (!html.includes('id="innovation-news"')) html = html.replace('<section id="support"', news + '<section id="support"');
   }
-  if (!url.pathname.startsWith('/admin/')&&!html.includes('/assets/analytics.js')) html = html.replace('</body>', '<script src="/assets/analytics.js?v=20260913-1" defer></script></body>');
+  if (!url.pathname.startsWith('/admin/')) {
+    if(!html.includes('/assets/analytics.js')) html = html.replace('</body>', '<script src="/assets/analytics.js?v=20260913-1" defer></script></body>');
+    if(!html.includes('/assets/form-success.js')) html = html.replace('</body>', '<script src="/assets/form-success.js?v=20260913-1" defer></script></body>');
+  }
   const headers = new Headers(response.headers); headers.delete('content-length');
   return new Response(html, { status: response.status, statusText: response.statusText, headers });
 };
