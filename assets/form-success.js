@@ -1,0 +1,14 @@
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;root.CampaignFormSuccess=api;if(typeof document!=='undefined')api.showFromLocation();})(typeof globalThis!=='undefined'?globalThis:this,function(){
+const messages={
+'campaign-volunteer':{title:'Thank you for volunteering!',body:'Your information was successfully submitted. I appreciate your willingness to help support the campaign.'},
+'campaign-sign-request':{title:'Thank you for requesting a sign!',body:'Your sign request was successfully submitted. I appreciate your support for the campaign.'},
+'student-safeguards-support':{title:'Thank you for your support!',body:'Your support for the Student Safeguard Framework was successfully submitted. I appreciate you taking the time to add your voice.'},
+'staff-feedback':{title:'Thank you for sharing your feedback!',body:'Your feedback was successfully submitted. I appreciate you taking the time to share your perspective.'},
+'campaign-contact':{title:'Thank you for reaching out!',body:'Your message was successfully submitted. I appreciate you taking the time to contact the campaign.'},
+'sepac-interest':{title:'Thank you for your interest!',body:'Your SEPAC interest form was successfully submitted. I appreciate your willingness to get involved.'}
+};
+function confirmationFor(name){return messages[name]||{title:'Thank you!',body:'Your form was successfully submitted. I appreciate your support.'}}
+function inferForm(params){for(const name of Object.keys(messages)){if(params.has(name)||params.get('form')===name)return name}for(const [key,val] of params){if(val==='thanks'){if(key==='contact')return'campaign-contact';if(key==='sepac')return'sepac-interest';if(/volunteer/i.test(key))return'campaign-volunteer';if(/sign/i.test(key))return'campaign-sign-request';if(/safeguard/i.test(key))return'student-safeguards-support';if(/staff/i.test(key))return'staff-feedback'}}return null}
+function showFromLocation(){const params=new URLSearchParams(location.search),name=inferForm(params);if(!name)return;const m=confirmationFor(name),box=document.createElement('div');box.setAttribute('role','status');box.setAttribute('aria-live','polite');box.innerHTML='<div style="font-size:26px;line-height:1">✓</div><div><strong style="display:block;font-size:1.15rem">'+m.title+'</strong><span>'+m.body+'</span></div>';box.style.cssText='position:fixed;z-index:99999;left:50%;top:22px;transform:translateX(-50%);width:min(620px,calc(100% - 28px));display:flex;gap:14px;align-items:center;background:#fbf6e9;color:#1c1a17;border:3px solid #d6a72a;border-radius:14px;padding:16px 18px;box-shadow:0 12px 34px #0005;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif';document.body.appendChild(box);box.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>box.remove(),12000)}
+return{confirmationFor,inferForm,showFromLocation};
+});
