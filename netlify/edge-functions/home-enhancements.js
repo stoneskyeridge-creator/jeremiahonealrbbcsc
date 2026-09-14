@@ -12,7 +12,7 @@ export default async (request, context) => {
   }
   if (!url.pathname.startsWith('/admin/')) {
     if(!html.includes('/assets/analytics.js')) html = html.replace('</body>', '<script src="/assets/analytics.js?v=20260913-1" defer></script></body>');
-    if(!html.includes('/assets/form-success.js')) html = html.replace('</body>', '<script src="/assets/form-success.js?v=20260913-1" defer></script></body>');
+    if(!html.includes('/assets/form-success.js')) html = html.replace('</body>', '<script src="/assets/form-success.js?v=20260913-4" defer></script></body>');
   }
   const headers = new Headers(response.headers); headers.delete('content-length');
   return new Response(html, { status: response.status, statusText: response.statusText, headers });
