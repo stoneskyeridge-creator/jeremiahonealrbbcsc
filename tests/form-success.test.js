@@ -16,7 +16,9 @@ test('unknown forms receive a safe generic confirmation',()=>{
   assert.match(msg.body,/submitted/i);
 });
 
-test('success celebration uses a short confetti burst',()=>{
-  assert.ok(celebrationConfig.duration>=1800&&celebrationConfig.duration<=3500);
-  assert.ok(celebrationConfig.pieces>=50);
+test('success celebration is a seven-second full-screen chicken takeover',()=>{
+  assert.equal(celebrationConfig.duration,7000);
+  assert.ok(celebrationConfig.pieces>=250);
+  assert.match(celebrationConfig.stageImage,/chicken-stage/i);
+  assert.equal(celebrationConfig.fullScreen,true);
 });
