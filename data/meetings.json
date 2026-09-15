@@ -1,9 +1,20 @@
 [
   {
+    "id": "official-2026-10-20",
+    "meetingDate": "2026-10-20",
+    "meetingTitle": "RBBCSC School Board",
+    "sourceUrl": "https://rbbschools.net/fs/resource-manager/view/27da7c66-d8bc-4bc0-87ed-8ba4cd8e4d84",
+    "video": false,
+    "captionStatus": "unknown",
+    "transcriptSegments": 0,
+    "ingestion": "auto",
+    "writtenDocuments": true
+  },
+  {
     "id": "official-2026-09-15",
     "meetingDate": "2026-09-15",
     "meetingTitle": "RBBCSC School Board",
-    "sourceUrl": "https://rbbschools.net/fs/resource-manager/view/27da7c66-d8bc-4bc0-87ed-8ba4cd8e4d84",
+    "sourceUrl": "https://rbbschools.net/fs/resource-manager/view/b26c189e-7a1c-49f3-abe2-9692c6a3e8a8",
     "video": false,
     "captionStatus": "unknown",
     "transcriptSegments": 0,
