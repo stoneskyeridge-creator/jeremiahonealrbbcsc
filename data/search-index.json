@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-15T09:38:57.865Z",
-  "totalRecords": 16269,
+  "generatedAt": "2026-09-16T09:32:34.483Z",
+  "totalRecords": 17309,
   "shards": [
     {
       "year": "undated",
@@ -11,20 +11,20 @@
     {
       "year": "2026",
       "file": "data/search-shards/2026-01.json",
-      "records": 3759,
-      "bytes": 4193974
+      "records": 3879,
+      "bytes": 4062498
     },
     {
       "year": "2026",
       "file": "data/search-shards/2026-02.json",
-      "records": 2710,
-      "bytes": 4194238
+      "records": 3171,
+      "bytes": 4193756
     },
     {
       "year": "2026",
       "file": "data/search-shards/2026-03.json",
-      "records": 560,
-      "bytes": 1665401
+      "records": 1019,
+      "bytes": 2370618
     },
     {
       "year": "2025",

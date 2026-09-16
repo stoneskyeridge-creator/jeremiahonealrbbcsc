@@ -11,6 +11,17 @@
     "writtenDocuments": true
   },
   {
+    "id": "cats-16430",
+    "meetingDate": "2026-09-15",
+    "meetingTitle": "Richland Bean Blossom School Board 9/15",
+    "sourceUrl": "https://catstv.net/m.php?q=16430",
+    "video": true,
+    "writtenDocuments": false,
+    "captionStatus": "publisher-caption",
+    "transcriptSegments": 1040,
+    "ingestion": "auto"
+  },
+  {
     "id": "official-2026-09-15",
     "meetingDate": "2026-09-15",
     "meetingTitle": "RBBCSC School Board",
