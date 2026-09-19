@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-09-18T09:31:49.034Z",
+  "generatedAt": "2026-09-19T09:30:02.046Z",
   "totalRecords": 17310,
   "shards": [
     {
       "year": "undated",
       "file": "data/search-shards/undated.json",
       "records": 5,
-      "bytes": 1148185
+      "bytes": 1148191
     },
     {
       "year": "2026",
