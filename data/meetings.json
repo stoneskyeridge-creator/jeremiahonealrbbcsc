@@ -1,5 +1,16 @@
 [
   {
+    "id": "cats-16611",
+    "meetingDate": "2026-10-20",
+    "meetingTitle": "Richland Bean Blossom School Board 10/20",
+    "sourceUrl": "https://catstv.net/m.php?q=16611",
+    "video": true,
+    "writtenDocuments": false,
+    "captionStatus": "publisher-caption",
+    "transcriptSegments": 947,
+    "ingestion": "auto"
+  },
+  {
     "id": "official-2026-10-20",
     "meetingDate": "2026-10-20",
     "meetingTitle": "RBBCSC School Board",
@@ -178,7 +189,7 @@
   {
     "id": "cats-15761",
     "meetingDate": "2026-04-21",
-    "meetingTitle": "Richland Bean Blossom School Board 4/21",
+    "meetingTitle": "Richland Bean Blossom School Board 4/21/2026",
     "sourceUrl": "https://catstv.net/m.php?q=15761",
     "video": true,
     "writtenDocuments": false,
