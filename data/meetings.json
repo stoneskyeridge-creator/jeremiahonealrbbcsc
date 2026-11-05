@@ -1,5 +1,27 @@
 [
   {
+    "id": "cats-16678",
+    "meetingDate": "2026-11-04",
+    "meetingTitle": "Richland Bean Blossom School Board 11/4",
+    "sourceUrl": "https://catstv.net/m.php?q=16678",
+    "video": true,
+    "writtenDocuments": false,
+    "captionStatus": "publisher-caption",
+    "transcriptSegments": 101,
+    "ingestion": "auto"
+  },
+  {
+    "id": "cats-16679",
+    "meetingDate": "2026-11-04",
+    "meetingTitle": "Richland Bean Blossom School Board Work Session 11/4",
+    "sourceUrl": "https://catstv.net/m.php?q=16679",
+    "video": true,
+    "writtenDocuments": false,
+    "captionStatus": "publisher-caption",
+    "transcriptSegments": 633,
+    "ingestion": "auto"
+  },
+  {
     "id": "official-2026-11-04",
     "meetingDate": "2026-11-04",
     "meetingTitle": "RBBCSC School Board",
