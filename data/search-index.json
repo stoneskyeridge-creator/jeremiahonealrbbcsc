@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T18:11:11.398Z",
+  "generatedAt": "2026-11-19T18:23:52.533Z",
   "totalRecords": 19810,
   "shards": [
     {
@@ -18,7 +18,7 @@
       "year": "2026",
       "file": "data/search-shards/2026-02.json",
       "records": 3212,
-      "bytes": 4161115
+      "bytes": 4166415
     },
     {
       "year": "2026",
